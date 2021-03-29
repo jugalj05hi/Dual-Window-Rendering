@@ -67,7 +67,7 @@ int main() {
         SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, 0);
 
         SDL_Window* subWindow = SDL_CreateWindow("Sub Window", WINDOW_WIDTH, 0, 960, 320, 0);
-        SDL_Renderer* subRenderer = SDL_CreateRenderer(subWindow, -1, SDL_RENDERER_ACCELERATED);
+        SDL_Renderer* subRenderer = SDL_CreateRenderer(subWindow, -1, 0);
         SDL_Texture* texture = ResourceManager::getInstance().loadTexture("./assets/Tileset.png", subRenderer);
         generateTileSheetGrid();
 
@@ -79,6 +79,7 @@ int main() {
         int playerTwoScore = 0;
         static int lastTime = 0;
         bool winner = false;
+        int xMos, yM;
 
         while (running) {
 
@@ -119,26 +120,27 @@ int main() {
                     {
                         buttons[Buttons::PaddleTwoDown] = true;
                     }
+                    // else if(event.type == SDL_BUTTON_RIGHT){
+                    //     SDL
+                    // }
+
 
                 }
-                else if (event.type == SDL_KEYUP)
-                {
-                    if (event.key.keysym.sym == SDLK_w)
-                    {
-                        buttons[Buttons::PaddleOneUp] = false;
+                else if(event.type==SDL_MOUSEBUTTONDOWN){
+
+                    switch(event.button.button){
+                        case SDL_BUTTON_LEFT:
+                            std::cout << "Left button pressed" << std::endl;
+                            break;
+                        case SDL_BUTTON_RIGHT:
+                            std::cout << "Right button pressed" << std::endl;
+                            std::cout<<"Xcoordinate"<<event.button.x<<"\n";
+                            std::cout<<"YCoordinate"<<event.button.y<<"\n";
+                            std::cout<<"Window ID"<<event.button.windowID<<"\n";
+                            // SDL_MouseButtonEvent 
+                            break;   
                     }
-                    else if (event.key.keysym.sym == SDLK_s)
-                    {
-                        buttons[Buttons::PaddleOneDown] = false;
-                    }
-                    else if (event.key.keysym.sym == SDLK_UP)
-                    {
-                        buttons[Buttons::PaddleTwoUp] = false;
-                    }
-                    else if (event.key.keysym.sym == SDLK_DOWN)
-                    {
-                        buttons[Buttons::PaddleTwoDown] = false;
-                    }
+
                 }
             }
             
@@ -157,7 +159,7 @@ int main() {
             if (timerFPS < (1000 / FPS)) {
                 SDL_Delay((1000 / FPS) - timerFPS);
             }
-            std::cout << "FPS: " << fps << std::endl;
+            // std::cout << "FPS: " << fps << std::endl;
             SDL_RenderCopy(subRenderer,texture,NULL,NULL);
             SDL_RenderPresent(renderer);
             SDL_RenderPresent(subRenderer);
