@@ -4,6 +4,7 @@
 #include <SDL2/SDL_mixer.h>
 #include <SDL2_image/SDL_image.h>
 #include <ResourceManager.hpp>
+#include "TileComponent.hpp"
 #include <string>
 #include <iostream>
 #include <map>
@@ -15,9 +16,10 @@ const int FPS = 60;
 
 const int TILE_MAP_HEIGHT = 960;
 const int TILE_MAP_WIDTH = 320;
-const int TILE_SIZE = 16;
+const int TILE_SIZE = 32;
+std::map<std::vector<int>, int> tMap;
 
-
+std::vector<TileComponent> tileArray;
 enum Buttons
 {
     PaddleOneUp = 0,
@@ -25,12 +27,24 @@ enum Buttons
     PaddleTwoUp,
     PaddleTwoDown,
 };
-std::map<int, std::vector<int>> tMap;
 bool init() {
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
         return false;
     }
     return true;
+}
+void getTileNumber(int x, int y) {
+    
+    int _x = std::floor( x / TILE_SIZE);
+    int _y = std::floor(y / TILE_SIZE);
+    _x *= TILE_SIZE;
+    _y *= TILE_SIZE;
+    std::cout << "The tile selected is: " << _x << " " << _y << std::endl;
+    std::vector<int> tmp;
+    tmp.push_back(_x);
+    tmp.push_back(_y);
+    std::cout << "The tile Number is " << tMap.at(tmp) << std::endl;
+
 }
 int frameCount, timerFPS, lastFrame, fps;
 void generateTileSheetGrid()
@@ -40,14 +54,17 @@ void generateTileSheetGrid()
     int counter = 1;
     int x = 0, y = 0;
     std::vector<int> tempVector;
-    for (int i = 0; i < colss; i++)
+    for (int i = 0; i < rowss; i++)
     {
-        for (int j = 0; j < rowss; j++)
+        for (int j = 0; j < colss; j++)
         {
             tempVector.clear();
             tempVector.push_back(x);
             tempVector.push_back(y);
-            tMap.insert({ counter, tempVector });
+            tMap.insert({ tempVector, counter });
+            std::cout << "X = " << x << std::endl;
+            std::cout << "Y = " << y << std::endl;
+            std::cout << " VAL = " << tMap.at(tempVector) << std::endl;
 
             x += TILE_SIZE;
             ++counter;
@@ -56,6 +73,9 @@ void generateTileSheetGrid()
         y += TILE_SIZE;
     }
 }
+
+
+
 int main() {
 
     if (!init()) std::cout << "Failed at SDL_Init()" << std::endl;
@@ -120,9 +140,6 @@ int main() {
                     {
                         buttons[Buttons::PaddleTwoDown] = true;
                     }
-                    // else if(event.type == SDL_BUTTON_RIGHT){
-                    //     SDL
-                    // }
 
 
                 }
@@ -131,12 +148,20 @@ int main() {
                     switch(event.button.button){
                         case SDL_BUTTON_LEFT:
                             std::cout << "Left button pressed" << std::endl;
+                            if (event.button.windowID == 2) {
+
+                                
+                                // std::cout << "Clicked in TILE MAP WINDOW" << std::endl;
+                                // std::cout << "Xcoordinate" << event.button.x << "\n";
+                                // std::cout << "YCoordinate" << event.button.y << "\n";
+                                getTileNumber(event.button.x, event.button.y);
+
+                            }
                             break;
                         case SDL_BUTTON_RIGHT:
-                            std::cout << "Right button pressed" << std::endl;
-                            std::cout<<"Xcoordinate"<<event.button.x<<"\n";
-                            std::cout<<"YCoordinate"<<event.button.y<<"\n";
-                            std::cout<<"Window ID"<<event.button.windowID<<"\n";
+                            // std::cout << "Right button pressed" << std::endl;
+                            
+                            // std::cout<<"Window ID"<<event.button.windowID<<"\n";
                             // SDL_MouseButtonEvent 
                             break;   
                     }
