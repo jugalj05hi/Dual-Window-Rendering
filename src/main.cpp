@@ -30,7 +30,7 @@ std::map<std::vector<int>, int> gridMap;
 // r= WINDOW_WIDTH/32;
 // c= WINDOW_HEIGHT/32;
 
-GameEngineTile tileCollection[1000];
+GameEngineTile tileCollection[1000]; //Vector needed 
 
 std::vector<TileComponent> tileArray;
 enum Buttons
@@ -238,12 +238,12 @@ int main() {
                                 std::cout << "Clicked in Game WINDOW" << std::endl;
                                 // std::cout << "Xcoordinate" << event.button.x << "\n";
                                 // std::cout << "YCoordinate" << event.button.y << "\n"; 
-                                int _x = std::floor( event.button.x / TILE_SIZE);
-                                int _y = std::floor(event.button.y / TILE_SIZE);
-                                _x *= TILE_SIZE;
-                                _y *= TILE_SIZE;
-                                std::cout << "Xcoordinate" << _x << "\n";
-                                std::cout << "YCoordinate" << _y << "\n"; 
+                                // int _x = std::floor( event.button.x / TILE_SIZE);
+                                // int _y = std::floor(event.button.y / TILE_SIZE);
+                                // _x *= TILE_SIZE;
+                                // _y *= TILE_SIZE;
+                                // std::cout << "Xcoordinate" << _x << "\n";
+                                // std::cout << "YCoordinate" << _y << "\n"; 
                                 std::cout<<"Current Tile Selected"<<tileSelected<<std::endl;
                                 gridSelected=getGridNumber(event.button.x,event.button.y);
                                 std::vector<int> temp=tMap2.at(tileSelected);
@@ -298,11 +298,15 @@ int main() {
 
 
             SDL_SetRenderDrawColor(renderer, 0x0, 0x0, 0x0, 0xFF);
+            SDL_SetRenderDrawColor(subRenderer, 0x0, 0x0, 0x0, 0xFF);
+
             SDL_RenderClear(renderer);
             SDL_RenderClear(subRenderer);
 
             // Drawing the net
             SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+            SDL_SetRenderDrawColor(subRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
+
             
 
             frameCount++;
@@ -316,6 +320,41 @@ int main() {
                 tileCollection[i].Render(renderer);
             
             } 
+            // for(int y=0; x<=WINDOW_HEIGHT; y+=32){
+            //     SDL_RenderDrawLine(renderer,)
+            // }
+        //    SDL_SetRenderDrawColor(renderer,0xFF,0xFF,0xFF,0xFF);
+        //     for(int x=0; x<WINDOW_WIDTH;x+=32){
+        //         for (int y = 0; y < WINDOW_HEIGHT; y+=32)
+        //         {
+        //             SDL_RenderDrawPoint(renderer,x,y,WINDOW_WIDTH,WINDOW_HEIGHT);
+        //         }
+                
+        //     }
+         for (int x = 0; x < 1 + WINDOW_WIDTH;x += 32) {
+            SDL_RenderDrawLine(renderer, x, 0, x, WINDOW_HEIGHT);
+        }
+
+        for (int y = 0; y < 1 + WINDOW_HEIGHT;y += 32) {
+            SDL_RenderDrawLine(renderer, 0, y, WINDOW_WIDTH, y);
+        }
+        for (int x = 0; x < 1 + 960;x += 32) {
+            SDL_RenderDrawLine(subRenderer, x, 0, x, 320);
+        }
+
+        for (int y = 0; y < 1 + 320;y += 32) {
+            SDL_RenderDrawLine(subRenderer, 0, y, 960, y);
+        }
+
+            // for (int x = 0; x < 1 + WINDOW_WIDTH;
+            //     x += grid_cell_size) {
+            //     SDL_RenderDrawLine(renderer, x, 0, x, WINDOW_WIDTH);
+            // }
+
+            // for (int y = 0; y < 1 + WINDOW_HEIGHT;
+            //     y += grid_cell_size) {
+            //     SDL_RenderDrawLine(renderer, 0, y, WINDOW_HEIGHT, y);
+            // }
             SDL_RenderPresent(renderer);
             SDL_RenderPresent(subRenderer);
 
