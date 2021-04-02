@@ -248,7 +248,7 @@ int main() {
                                 gridSelected=getGridNumber(event.button.x,event.button.y);
                                 std::vector<int> temp=tMap2.at(tileSelected);
                                 std::cout<<"Current Grid Selected"<<gridSelected<<std::endl;
-                                tileCollection[gridSelected].Update(temp.at(0),temp.at(1));
+                                tileCollection[gridSelected].Update(temp.at(0),temp.at(1),tileSelected);
 
 
                             // tileCollection[gridSelected].Update()
@@ -262,6 +262,14 @@ int main() {
                             
                             // std::cout<<"Window ID"<<event.button.windowID<<"\n";
                             // SDL_MouseButtonEvent 
+                            gridSelected=getGridNumber(event.button.x,event.button.y);
+                            std::vector<int> temp=tMap2.at(tileSelected);
+                            std::cout<<"Current Grid Selected"<<gridSelected<<std::endl;
+                            if(tileCollection[gridSelected].GetTileType()!=0){
+                                tileCollection[gridSelected].Reset();
+
+                            }
+                            // tileCollection[gridSelected].Update(temp.at(0),temp.at(1),tileSelected)
                             break;   
                     }
 

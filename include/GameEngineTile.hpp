@@ -15,7 +15,7 @@ class GameEngineTile{
         SDL_Renderer* renderer_;
         // void Update(int x, int y);
         // void Render();
-        int tileType;
+        int tileType=0;
         SDL_Texture* tex;
         
 
@@ -23,8 +23,10 @@ class GameEngineTile{
     public:
         GameEngineTile();
         GameEngineTile(int x, int y, int type,SDL_Texture*text, SDL_Renderer* renderer);
-        void Update(int x, int y);
+        void Update(int x, int y, int z);
         void Render(SDL_Renderer* ren);
+        void Reset();
+        int GetTileType();
 };
 
 

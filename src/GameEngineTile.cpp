@@ -16,12 +16,13 @@ GameEngineTile::GameEngineTile(int x, int y, int type,SDL_Texture* texture, SDL_
 
 
 }
-void GameEngineTile::Update(int x,int y){
+void GameEngineTile::Update(int x,int y, int z){
     std::cout<<"Update function from GameEngineTile";
     src.x=x;
     src.y=y;
     src.w=32;
     src.h=32;
+    tileType=z;
     if(tex==NULL){
         std::cout<<"YES";
     }
@@ -41,4 +42,14 @@ void GameEngineTile::Render(SDL_Renderer* r1){
     SDL_RenderCopy(r1,tex,&src,&dest);
 
     // SDL_RenderCopy(tex,&src,&dest,renderer);
+}
+
+int GameEngineTile::GetTileType(){
+    return tileType;
+
+}
+void GameEngineTile::Reset(){
+    src.x=NULL;
+    src.y=NULL;
+    
 }
