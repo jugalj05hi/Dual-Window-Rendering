@@ -13,6 +13,8 @@ GameEngineTile::GameEngineTile(int x, int y, int type,SDL_Texture* texture, SDL_
     dest.h=32;
     tileType=type;
     tex=texture;
+    
+    
 
 
 }
@@ -51,5 +53,70 @@ int GameEngineTile::GetTileType(){
 void GameEngineTile::Reset(){
     src.x=NULL;
     src.y=NULL;
+    isCollectable=false;
+    isCollidable=false;
+    isGravity=false;
+    isPlayable=false;
+    isAI=false;
+
+
     
+}
+
+void GameEngineTile::setCollectable(){
+    isCollectable=!isCollectable;
+    
+}
+void GameEngineTile::setGravity(){
+
+    isGravity=!isGravity;
+
+}
+void GameEngineTile:: setCollidable(){
+    isCollidable=!isCollidable;
+
+}
+void GameEngineTile:: setPlayable(){
+    isPlayable=!isPlayable;
+
+}
+void GameEngineTile:: setAI(){
+    isAI=!isAI;
+    
+}
+////
+bool GameEngineTile::getCollectable(){
+    // isCollectable=!isCollectable;
+    return isCollectable;
+    
+}
+bool GameEngineTile::getGravity(){
+
+    // isGravity=!isGravity;
+    return isGravity;
+
+}
+
+bool GameEngineTile:: getCollidable(){
+    return isCollidable;
+
+}
+bool GameEngineTile:: getPlayable(){
+    return isPlayable;
+
+}
+bool GameEngineTile:: getAI(){
+    return isAI;
+    
+}
+void GameEngineTile::info(){
+    std::cout<<"X coodinate:"<<xPos<<"\n";
+    std::cout<<"Y"<<yPos<<"\n";
+    std::cout<<"is Collidable"<<isCollidable<<"\n";
+    std::cout<<"is AI"<<isAI<<"\n";
+    std::cout<<"is Collectable"<<isCollectable<<"\n";
+    std::cout<<"is Input:"<<isPlayable<<"\n";
+    std::cout<<"is Gravity:"<<isGravity<<"\n";
+
+
 }

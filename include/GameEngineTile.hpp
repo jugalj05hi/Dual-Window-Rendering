@@ -17,6 +17,16 @@ class GameEngineTile{
         // void Render();
         int tileType=0;
         SDL_Texture* tex;
+        bool isCollectable=false;
+        bool isCollidable=false;
+        bool isGravity=false;
+        bool isPlayable=false;
+        bool isAI=false;
+
+
+
+
+        
         
 
 
@@ -27,6 +37,19 @@ class GameEngineTile{
         void Render(SDL_Renderer* ren);
         void Reset();
         int GetTileType();
+        void setCollectable();
+        void setGravity();
+        void setCollidable();
+        void setPlayable();
+        void setAI();
+        bool getCollectable();
+        bool getGravity();
+        bool getCollidable();
+        bool getPlayable();
+        bool getAI();
+        void info();
+
+        
 };
 
 

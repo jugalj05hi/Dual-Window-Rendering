@@ -5,7 +5,7 @@ import platform
 COMPILER="clang++ -std=c++17"   # The compiler we want to use
                                 #(You may try g++ if you have trouble)
 SOURCE="./src/*.cpp"    # Where the source code lives
-EXECUTABLE="bin/game"          # Name of the final executable
+EXECUTABLE="bin/game1"          # Name of the final executable
 # ======================= COMMON CONFIGURATION OPTIONS ======================= #
 
 # (2)=================== Platform specific configuration ===================== #
