@@ -24,6 +24,7 @@ class Engine{
         GameEngineTile current;
         std::vector<TileComponent> tileArray;
         int gridSelected=0;
+        TTF_Font *scoreFont;
        
         // SDL_Rect src;
         // SDL_Rect dest;
@@ -42,7 +43,7 @@ class Engine{
         int getTileNumber(int x, int y);
         int getGridNumber(int x, int y);
         // int get
-        void currentTileInfo(int x);
+        std::string currentTileInfo(int x);
         void generateTileSheetGrid();
         int gridNumber();
         void Collectable();

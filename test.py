@@ -25,10 +25,13 @@ test = mygameengine.Engine()
 # Note: This is a simple game that loops for 20 iterations and then
 #       exits. 
 from tkinter import *
+# test.Loop()
+
 master = Tk()
 
 def var_states():
-   print("mDone")
+    print(test.Loop())
+#    print("mDone")
 def setAI():
     print(var1.get())
 def setCollectible():
@@ -43,11 +46,8 @@ Label(master, text="What features you want to add to the current tile?").grid(ro
 
 
 
-
-Button(master, text='Quit', command=master.quit).grid(row=6, sticky=W, pady=4)
-Button(master, text='Show', command=var_states).grid(row=7, sticky=W, pady=4)
 var1 = BooleanVar()
-Checkbutton(master, text="AI ?", variable=var1,command=lambda:threading.Thread(target = setAI).start()).grid(row=1, sticky=W)
+Checkbutton(master, text="AI ?", variable=var1,command=setAI).grid(row=1, sticky=W)
 # start_button = Button(YourFrame, command = lambda:threading.Thread(target = readSensor).start()) #YourFrame is the Frame widget where you placed the start button
 
 var2 = BooleanVar()
@@ -59,19 +59,22 @@ Checkbutton(master, text="Collectible?", variable=var4,command=setCollectible).g
 var5 = BooleanVar()
 Checkbutton(master, text="Gravity?", variable=var5,command=setGravity).grid(row=5, sticky=W)
 
-
+Button(master, text='Quit', command=master.quit).grid(row=6, sticky=W, pady=4)
+Button(master, text='Show', command=NONE).grid(row=7, sticky=W, pady=4)
 
 # mainloop()
 
-while(1):
+# while(1):
     # master.after(0,setAI)
     # master.after(0,setCollision)
+threading.Thread(target=test.Loop()).start()
 
+threading.Thread(target=master.mainloop()).start()
 
-   
-    # update()
-    test.Loop()
-    print(test.gridNumber())
+# master.update_idletasks()
+# master.update()
+
+# print(test.gridNumber())
     # update()
 # mainloop()
 

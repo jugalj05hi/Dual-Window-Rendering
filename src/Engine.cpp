@@ -7,11 +7,13 @@
 #include "TileComponent.hpp"
 #include "GameEngineTile.hpp"
 #include "Engine.hpp"
+#include "PlayerScore.hpp"
 #include <string>
 #include <iostream>
 #include <map>
 #include <vector>
-#include <pybind11/pybind11.h>
+// #include <pybind11/pybind11.h>
+// #include "Vec2.hpp"
 
 // #define r 1 
 // #define c 1
@@ -23,6 +25,7 @@ const int FPS = 60;
 const int TILE_MAP_HEIGHT = 960;
 const int TILE_MAP_WIDTH = 320;
 const int TILE_SIZE = 32;
+
 // std::map<std::vector<int>, int> tMap;
 // std::map<int,std::vector<int>> tMap2;
 
@@ -50,8 +53,9 @@ bool Engine::init() {
     return true;
 }
 
-void Engine::currentTileInfo(int x){
-    tileCollection[x].info();
+std::string Engine::currentTileInfo(int x){
+   return tileCollection[x].info();
+
 
 
 
@@ -68,11 +72,11 @@ int Engine::getTileNumber(int x, int y) {
     int _y = std::floor(y / TILE_SIZE);
     _x *= TILE_SIZE;
     _y *= TILE_SIZE;
-    std::cout << "The tile selected is: " << _x << " " << _y << std::endl;
+    // std::cout << "The tile selected is: " << _x << " " << _y << std::endl;
     std::vector<int> tmp;
     tmp.push_back(_x);
     tmp.push_back(_y);
-    std::cout << "The tile Number is " << tMap.at(tmp) << std::endl;
+    // std::cout << "The tile Number is " << tMap.at(tmp) << std::endl;
     return tMap.at(tmp);
 }
 int Engine::getGridNumber(int x, int y) {
@@ -81,7 +85,7 @@ int Engine::getGridNumber(int x, int y) {
     int _y = std::floor(y / TILE_SIZE);
     _x *= TILE_SIZE;
     _y *= TILE_SIZE;
-    std::cout << "The tile selected is: " << _x << " " << _y << std::endl;
+    // std::cout << "The tile selected is: " << _x << " " << _y << std::endl;
     std::vector<int> tmp;
     tmp.push_back(_x);
     tmp.push_back(_y);
@@ -114,28 +118,28 @@ void Engine::AI(){
     tileCollection[gridSelected].setAI();
 
 }
-bool getCollectableInfo(){
-    return  tileCollection[gridSelected].getCollectable();
+bool Engine::getCollectableInfo(){
+    tileCollection[gridSelected].setGravity();
 
 
 }
-bool getGravityInfo(){
+bool Engine:: getGravityInfo(){
     return  tileCollection[gridSelected].getGravity();
 
 
 }
-bool getCollidableInfo(){
+bool Engine:: getCollidableInfo(){
         return  tileCollection[gridSelected].getCollidable();
 
     
 }
-bool getPlayableInfo(){
+bool Engine:: getPlayableInfo(){
     return  tileCollection[gridSelected].getPlayable();
 
 
     
 }
-bool getAIInfo(){
+bool Engine:: getAIInfo(){
     return  tileCollection[gridSelected].getAI();
     
 }
@@ -156,9 +160,9 @@ void Engine :: generateTileSheetGrid()
             tempVector.push_back(y);
             tMap.insert({ tempVector, counter });
             tMap2.insert({counter,tempVector});
-            std::cout << "X = " << x << std::endl;
-            std::cout << "Y = " << y << std::endl;
-            std::cout << " VAL = " << tMap.at(tempVector) << std::endl;
+            // std::cout << "X = " << x << std::endl;
+            // std::cout << "Y = " << y << std::endl;
+            // std::cout << " VAL = " << tMap.at(tempVector) << std::endl;
 
             x += TILE_SIZE;
             ++counter;
@@ -213,7 +217,7 @@ void Engine::Loop() {
         SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
         TTF_Init();
         Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-        SDL_Window* window = SDL_CreateWindow("Pong", 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
+        SDL_Window* window = SDL_CreateWindow("Pong", 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT+100, SDL_WINDOW_SHOWN);
         SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, 0);
         // SDL_Texture* texture2 = ResourceManager::getInstance().loadTexture("./assets/Tileset.png", renderer);
 
@@ -221,6 +225,14 @@ void Engine::Loop() {
         SDL_Renderer* subRenderer = SDL_CreateRenderer(subWindow, -1, 0);
         SDL_Texture* texture = ResourceManager::getInstance().loadTexture("./assets/Tileset.png", subRenderer);
         SDL_Texture* texture2 = ResourceManager::getInstance().loadTexture("./assets/Tileset1.png", renderer);
+        scoreFont=ResourceManager::getInstance().loadFont("./assets/DejaVuSansMono.ttf",20);
+            // scoreFont = resourceManager.loadFont(SCORE_FONT, 30);
+        if (scoreFont==NULL){
+            std::cout<<"NULL";
+        }
+        PlayerScore level(10,WINDOW_HEIGHT+10,renderer,scoreFont);
+
+
 
         generateTileSheetGrid();
         generateGameEngineGrid(texture2,renderer);
@@ -396,11 +408,11 @@ void Engine::Loop() {
 
                 }
             }
-            std::cout<<"Grid Selected "<<gridSelected<<"\n";
-            currentTileInfo(gridSelected);
+            // std::cout<<"Grid Selected "<<gridSelected<<"\n";
+            // currentTileInfo(gridSelected);
             // current.info();
             // currentTileInfo(2);
-
+            level.DisplayMessage(currentTileInfo(gridSelected));
 
             SDL_SetRenderDrawColor(renderer, 0x0, 0x0, 0x0, 0xFF);
             SDL_SetRenderDrawColor(subRenderer, 0x0, 0x0, 0x0, 0xFF);
@@ -460,6 +472,8 @@ void Engine::Loop() {
             //     y += grid_cell_size) {
             //     SDL_RenderDrawLine(renderer, 0, y, WINDOW_HEIGHT, y);
             // }
+            level.Draw();
+
             SDL_RenderPresent(renderer);
             SDL_RenderPresent(subRenderer);
 
@@ -477,38 +491,38 @@ void Engine::Loop() {
     }
     // return 0;
 }
-// int main(){
-//     Engine ob = Engine();
-//     std::cout<<"IM IN MAIN";
-//     ob.Loop();
-// }
+int main(){
+    Engine ob = Engine();
+    std::cout<<"IM IN MAIN";
+    ob.Loop();
+}
 // Include the pybindings
 
-namespace py = pybind11;
+// namespace py = pybind11;
 
 
-// Creates a macro function that will be called
-// whenever the module is imported into python
-// 'mygameengine' is what we 'import' into python.
-// 'm' is the interface (creates a py::module object)
-//      for which the bindings are created.
-//  The magic here is in 'template metaprogramming'
-PYBIND11_MODULE(mygameengine, m){
-    m.doc() = "our game engine as a library"; // Optional docstring
+// // Creates a macro function that will be called
+// // whenever the module is imported into python
+// // 'mygameengine' is what we 'import' into python.
+// // 'm' is the interface (creates a py::module object)
+// //      for which the bindings are created.
+// //  The magic here is in 'template metaprogramming'
+// PYBIND11_MODULE(mygameengine, m){
+//     m.doc() = "our game engine as a library"; // Optional docstring
 
-    py::class_<Engine>(m, "Engine")
-            .def(py::init())   // our constructor
-            .def("getTileNumber", &Engine::getTileNumber) // Expose member methods
-            .def("getGridNumber", &Engine::getGridNumber) 
-            .def("currentTileInfo", &Engine::currentTileInfo)
-            .def("gridNumber", &Engine::gridNumber)
+//     py::class_<Engine>(m, "Engine")
+//             .def(py::init())   // our constructor
+//             .def("getTileNumber", &Engine::getTileNumber) // Expose member methods
+//             .def("getGridNumber", &Engine::getGridNumber) 
+//             .def("currentTileInfo", &Engine::currentTileInfo)
+//             .def("gridNumber", &Engine::gridNumber)
 
-            .def("Loop", &Engine::Loop);
+//             .def("Loop", &Engine::Loop);
             
-            // .def("DrawRectangle", &Engine::DrawRectangle) ;
-// We do not need to expose everything to our users!
-//            .def("getSDLWindow", &SDLGraphicsProgram::getSDLWindow, py::return_value_policy::reference) 
-}
+//             // .def("DrawRectangle", &Engine::DrawRectangle) ;
+// // We do not need to expose everything to our users!
+// //            .def("getSDLWindow", &SDLGraphicsProgram::getSDLWindow, py::return_value_policy::reference) 
+// }
 
 
 

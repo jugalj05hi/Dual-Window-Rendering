@@ -47,7 +47,7 @@ class GameEngineTile{
         bool getCollidable();
         bool getPlayable();
         bool getAI();
-        void info();
+        std::string info();
 
         
 };

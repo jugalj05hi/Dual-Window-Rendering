@@ -109,14 +109,22 @@ bool GameEngineTile:: getAI(){
     return isAI;
     
 }
-void GameEngineTile::info(){
-    std::cout<<"X coodinate:"<<xPos<<"\n";
-    std::cout<<"Y"<<yPos<<"\n";
-    std::cout<<"is Collidable"<<isCollidable<<"\n";
-    std::cout<<"is AI"<<isAI<<"\n";
-    std::cout<<"is Collectable"<<isCollectable<<"\n";
-    std::cout<<"is Input:"<<isPlayable<<"\n";
-    std::cout<<"is Gravity:"<<isGravity<<"\n";
+std::string GameEngineTile::info(){
+    // std::cout<<"X coodinate:"<<xPos<<"\n";
+    // std::cout<<"Y"<<yPos<<"\n";
+    // std::cout<<"is Collidable"<<isCollidable<<"\n";
+    // std::cout<<"is AI"<<isAI<<"\n";
+    // std::cout<<"is Collectable"<<isCollectable<<"\n";
+    // std::cout<<"is Input:"<<isPlayable<<"\n";
+    // std::cout<<"is Gravity:"<<isGravity<<"\n";
+    std::string infoVal="X:"+std::to_string(xPos)+" Y:"+std::to_string(yPos)+
+                        "AI: "+std::to_string(isAI)+
+                        " Collectable:"+std::to_string(isCollectable)+
+                        " Collidable:"+std::to_string(isCollidable)+
+                        " Playable:"+std::to_string(isPlayable)+
+                        " Gravity:"+std::to_string(isGravity);
+     ;
+    return infoVal;
 
 
 }
