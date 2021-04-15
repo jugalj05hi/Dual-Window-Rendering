@@ -12,7 +12,7 @@
 #include <iostream>
 #include <map>
 #include <vector>
-// #include <pybind11/pybind11.h>
+#include <pybind11/pybind11.h>
 // #include "Vec2.hpp"
 
 // #define r 1 
@@ -176,6 +176,9 @@ std::vector<int> Engine ::returnCoordinates(int type){
         return tMap2.at(type);
 
 
+}
+int Engine:: gridValue(){
+    return gridSelected;
 }
 void Engine :: generateGameEngineGrid(SDL_Texture* tex,SDL_Renderer* renderEngine)
 {
@@ -498,31 +501,41 @@ int main(){
 }
 // Include the pybindings
 
-// namespace py = pybind11;
+namespace py = pybind11;
 
 
-// // Creates a macro function that will be called
-// // whenever the module is imported into python
-// // 'mygameengine' is what we 'import' into python.
-// // 'm' is the interface (creates a py::module object)
-// //      for which the bindings are created.
-// //  The magic here is in 'template metaprogramming'
-// PYBIND11_MODULE(mygameengine, m){
-//     m.doc() = "our game engine as a library"; // Optional docstring
+// Creates a macro function that will be called
+// whenever the module is imported into python
+// 'mygameengine' is what we 'import' into python.
+// 'm' is the interface (creates a py::module object)
+//      for which the bindings are created.
+//  The magic here is in 'template metaprogramming'
+PYBIND11_MODULE(mygameengine, m){
+    m.doc() = "our game engine as a library"; // Optional docstring
 
-//     py::class_<Engine>(m, "Engine")
-//             .def(py::init())   // our constructor
-//             .def("getTileNumber", &Engine::getTileNumber) // Expose member methods
-//             .def("getGridNumber", &Engine::getGridNumber) 
-//             .def("currentTileInfo", &Engine::currentTileInfo)
-//             .def("gridNumber", &Engine::gridNumber)
-
-//             .def("Loop", &Engine::Loop);
+    py::class_<Engine>(m, "Engine")
+            .def(py::init())   // our constructor
+            .def("getTileNumber", &Engine::getTileNumber) // Expose member methods
+            .def("getGridNumber", &Engine::getGridNumber) 
+            .def("currentTileInfo", &Engine::currentTileInfo)
+            .def("gridNumber", &Engine::gridNumber)
+            .def("getGravity", &Engine::getGravityInfo) // Expose member methods
+            .def("getCollectable", &Engine::getCollectableInfo) // Expose member methods
+            .def("getCollidable", &Engine::getCollidableInfo) // Expose member methods
+            .def("getPlayable", &Engine::getPlayableInfo) // Expose member methods
+            .def("getAI", &Engine::getAIInfo) // Expose member methods
+            .def("Gravity", &Engine::Gravity) // Expose member methods
+            .def("Collectable", &Engine::Collectable) // Expose member methods
+            .def("Collidable", &Engine::Collidable) // Expose member methods
+            .def("Playable", &Engine::Playable) // Expose member methods
+            .def("AI", &Engine::AI) // Expose member methods
+            .def("gridSelected", &Engine::gridValue)
+            .def("Loop", &Engine::Loop);
             
-//             // .def("DrawRectangle", &Engine::DrawRectangle) ;
-// // We do not need to expose everything to our users!
-// //            .def("getSDLWindow", &SDLGraphicsProgram::getSDLWindow, py::return_value_policy::reference) 
-// }
+            // .def("DrawRectangle", &Engine::DrawRectangle) ;
+// We do not need to expose everything to our users!
+//            .def("getSDLWindow", &SDLGraphicsProgram::getSDLWindow, py::return_value_policy::reference) 
+}
 
 
 

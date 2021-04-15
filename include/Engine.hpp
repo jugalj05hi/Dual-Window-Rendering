@@ -56,6 +56,7 @@ class Engine{
         bool getCollidableInfo();
         bool getPlayableInfo();
         bool getAIInfo();
+        int gridValue();
         // void 
         std::vector<int> returnCoordinates(int type);
         void generateGameEngineGrid(SDL_Texture* tex,SDL_Renderer* renderEngine);
