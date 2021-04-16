@@ -12,7 +12,9 @@
 #include <iostream>
 #include <map>
 #include <vector>
-#include <pybind11/pybind11.h>
+#include "json.hpp"
+#include <fstream>
+// #include <pybind11/pybind11.h>
 // #include "Vec2.hpp"
 
 // #define r 1 
@@ -46,6 +48,7 @@ const int TILE_SIZE = 32;
 //     PaddleTwoUp,
 //     PaddleTwoDown,
 // };
+using json = nlohmann::json;
 bool Engine::init() {
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
         return false;
@@ -144,6 +147,26 @@ bool Engine:: getAIInfo(){
     
 }
 
+void Engine::download() {
+    json jObject;
+    GameEngineTile* tileObject;
+    json jsonArray = json::array();
+    for (int i = 0; i < 600;i++) {
+        jObject.clear();
+        tileObject = tileCollection[i].getObject();
+        jObject["AI"] = tileObject->getAI();
+        jObject["Gravity"] = tileObject->getGravity();
+        jObject["Collectable"] = tileObject->getCollectable();
+        jObject["Collide"] = tileObject->getCollidable();
+        jObject["Playable"] = tileObject->getPlayable();
+        jObject["TileNumber"] = tileObject->GetTileType();
+        jsonArray.push_back(jObject);
+    }
+    std::ofstream out("tileMap.txt");
+    out << jsonArray.dump();
+    // std::cout << jsonArray.dump() << std::endl;
+}
+
 void Engine :: generateTileSheetGrid()
 {
     int colss = std::floor(TILE_MAP_HEIGHT / TILE_SIZE);
@@ -195,7 +218,7 @@ void Engine :: generateGameEngineGrid(SDL_Texture* tex,SDL_Renderer* renderEngin
             tempVector.clear();
             tempVector.push_back(x);
             tempVector.push_back(y);
-            tileCollection[counter]= GameEngineTile(x,y,counter,tex,renderEngine);
+            tileCollection[counter]= GameEngineTile(x,y,0,tex,renderEngine);
             // GameEngineTile tileCreated= new GameEngineTile(x)
             gridMap.insert({ tempVector, counter });
             // std::cout << "X = " << x << std::endl;
@@ -317,6 +340,9 @@ void Engine::Loop() {
                     {
                         // buttons[Buttons::PaddleTwoDown] = true;
                     }
+                    else if (event.key.keysym.sym == SDLK_d) {
+                        download();
+                    }
 
 
                 }
@@ -355,6 +381,7 @@ void Engine::Loop() {
                                 std::vector<int> temp=tMap2.at(tileSelected);
                                 std::cout<<"Current Grid Selected"<<gridSelected<<std::endl;
                                 tileCollection[gridSelected].Update(temp.at(0),temp.at(1),tileSelected);
+                                std::cout <<"TILESELECTED" << tileSelected << std::endl;
                                 // current=tileCollection[gridSelected];
 
                                 
@@ -501,7 +528,7 @@ int main(){
 }
 // Include the pybindings
 
-namespace py = pybind11;
+// namespace py = pybind11;
 
 
 // Creates a macro function that will be called
@@ -510,32 +537,32 @@ namespace py = pybind11;
 // 'm' is the interface (creates a py::module object)
 //      for which the bindings are created.
 //  The magic here is in 'template metaprogramming'
-PYBIND11_MODULE(mygameengine, m){
-    m.doc() = "our game engine as a library"; // Optional docstring
+// PYBIND11_MODULE(mygameengine, m){
+//     m.doc() = "our game engine as a library"; // Optional docstring
 
-    py::class_<Engine>(m, "Engine")
-            .def(py::init())   // our constructor
-            .def("getTileNumber", &Engine::getTileNumber) // Expose member methods
-            .def("getGridNumber", &Engine::getGridNumber) 
-            .def("currentTileInfo", &Engine::currentTileInfo)
-            .def("gridNumber", &Engine::gridNumber)
-            .def("getGravity", &Engine::getGravityInfo) // Expose member methods
-            .def("getCollectable", &Engine::getCollectableInfo) // Expose member methods
-            .def("getCollidable", &Engine::getCollidableInfo) // Expose member methods
-            .def("getPlayable", &Engine::getPlayableInfo) // Expose member methods
-            .def("getAI", &Engine::getAIInfo) // Expose member methods
-            .def("Gravity", &Engine::Gravity) // Expose member methods
-            .def("Collectable", &Engine::Collectable) // Expose member methods
-            .def("Collidable", &Engine::Collidable) // Expose member methods
-            .def("Playable", &Engine::Playable) // Expose member methods
-            .def("AI", &Engine::AI) // Expose member methods
-            .def("gridSelected", &Engine::gridValue)
-            .def("Loop", &Engine::Loop);
+//     py::class_<Engine>(m, "Engine")
+//             .def(py::init())   // our constructor
+//             .def("getTileNumber", &Engine::getTileNumber) // Expose member methods
+//             .def("getGridNumber", &Engine::getGridNumber) 
+//             .def("currentTileInfo", &Engine::currentTileInfo)
+//             .def("gridNumber", &Engine::gridNumber)
+//             .def("getGravity", &Engine::getGravityInfo) // Expose member methods
+//             .def("getCollectable", &Engine::getCollectableInfo) // Expose member methods
+//             .def("getCollidable", &Engine::getCollidableInfo) // Expose member methods
+//             .def("getPlayable", &Engine::getPlayableInfo) // Expose member methods
+//             .def("getAI", &Engine::getAIInfo) // Expose member methods
+//             .def("Gravity", &Engine::Gravity) // Expose member methods
+//             .def("Collectable", &Engine::Collectable) // Expose member methods
+//             .def("Collidable", &Engine::Collidable) // Expose member methods
+//             .def("Playable", &Engine::Playable) // Expose member methods
+//             .def("AI", &Engine::AI) // Expose member methods
+//             .def("gridSelected", &Engine::gridValue)
+//             .def("Loop", &Engine::Loop);
             
-            // .def("DrawRectangle", &Engine::DrawRectangle) ;
-// We do not need to expose everything to our users!
-//            .def("getSDLWindow", &SDLGraphicsProgram::getSDLWindow, py::return_value_policy::reference) 
-}
+//             // .def("DrawRectangle", &Engine::DrawRectangle) ;
+// // We do not need to expose everything to our users!
+// //            .def("getSDLWindow", &SDLGraphicsProgram::getSDLWindow, py::return_value_policy::reference) 
+// }
 
 
 

@@ -128,3 +128,8 @@ std::string GameEngineTile::info(){
 
 
 }
+GameEngineTile* GameEngineTile::getObject() {
+
+    return this;
+}
+
