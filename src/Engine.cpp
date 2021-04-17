@@ -18,13 +18,13 @@
 // #define r 1 
 // #define c 1
 
-const int WINDOW_WIDTH = 960;
-const int WINDOW_HEIGHT = 640;
-const int FPS = 60;
+// int WINDOW_WIDTH = 960;
+// int WINDOW_HEIGHT = 640;
+int FPS = 60;
 
-const int TILE_MAP_HEIGHT = 960;
-const int TILE_MAP_WIDTH = 320;
-const int TILE_SIZE = 32;
+int TILE_MAP_HEIGHT = 960;
+int TILE_MAP_WIDTH = 320;
+int TILE_SIZE = 32;
 
 // std::map<std::vector<int>, int> tMap;
 // std::map<int,std::vector<int>> tMap2;
@@ -46,13 +46,24 @@ const int TILE_SIZE = 32;
 //     PaddleTwoUp,
 //     PaddleTwoDown,
 // };
-bool Engine::init() {
+
+
+bool Engine::initialize() {
+    
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
         return false;
     }
     return true;
 }
 
+void Engine::setInit(int WINDOW_WIDTH1, int WINDOW_HEIGHT1,std::string tilepath1){
+    this->WINDOW_WIDTH=WINDOW_WIDTH1;
+    this->WINDOW_HEIGHT=WINDOW_HEIGHT1;
+    this->tilepath=tilepath1;
+
+
+
+}
 std::string Engine::currentTileInfo(int x){
    return tileCollection[x].info();
 
@@ -215,7 +226,7 @@ void Engine :: generateGameEngineGrid(SDL_Texture* tex,SDL_Renderer* renderEngin
 
 void Engine::Loop() {
 
-    if (!init()) std::cout << "Failed at SDL_Init()" << std::endl;
+    if (!initialize()) std::cout << "Failed at SDL_Init()" << std::endl;
     else {
         SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
         TTF_Init();
@@ -226,8 +237,8 @@ void Engine::Loop() {
 
         SDL_Window* subWindow = SDL_CreateWindow("Sub Window", WINDOW_WIDTH, 0, 960, 320, 0);
         SDL_Renderer* subRenderer = SDL_CreateRenderer(subWindow, -1, 0);
-        SDL_Texture* texture = ResourceManager::getInstance().loadTexture("./assets/Tileset.png", subRenderer);
-        SDL_Texture* texture2 = ResourceManager::getInstance().loadTexture("./assets/Tileset1.png", renderer);
+        SDL_Texture* texture = ResourceManager::getInstance().loadTexture(tilepath, subRenderer);
+        SDL_Texture* texture2 = ResourceManager::getInstance().loadTexture(tilepath, renderer);
         scoreFont=ResourceManager::getInstance().loadFont("./assets/DejaVuSansMono.ttf",20);
             // scoreFont = resourceManager.loadFont(SCORE_FONT, 30);
         if (scoreFont==NULL){
@@ -494,11 +505,12 @@ void Engine::Loop() {
     }
     // return 0;
 }
-int main(){
-    Engine ob = Engine();
-    std::cout<<"IM IN MAIN";
-    ob.Loop();
-}
+// int init(){
+//     Engine ob = Engine();
+//     std::cout<<"IM IN MAIN";
+//     ob.Loop();
+//     return 0;
+// }
 // Include the pybindings
 
 namespace py = pybind11;
@@ -514,7 +526,10 @@ PYBIND11_MODULE(mygameengine, m){
     m.doc() = "our game engine as a library"; // Optional docstring
 
     py::class_<Engine>(m, "Engine")
-            .def(py::init())   // our constructor
+            .def(py::init())  
+            .def("setInit",&Engine::setInit)  
+
+            // .def(py::setInit<int,int,std::string>(), py::arg("WINDOW_WIDTH"), py::arg("WINDOW_HEIGHT"),py::arg("tilepath"))   // our constructor // our constructor
             .def("getTileNumber", &Engine::getTileNumber) // Expose member methods
             .def("getGridNumber", &Engine::getGridNumber) 
             .def("currentTileInfo", &Engine::currentTileInfo)

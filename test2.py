@@ -3,6 +3,7 @@ from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QLabel, QCheckBox, QWidget
 from PyQt5.QtCore import QSize    
 import mygameengine
+from multiprocessing import Process
 currentTile=0
 class ExampleWindow(QMainWindow):
 
@@ -14,9 +15,9 @@ class ExampleWindow(QMainWindow):
 
         self.b = QCheckBox("Input?",self)
         self.b.setChecked(test.getPlayable())
-        self.b.setChecked(test.getPlayable())
+        # self.b.setChecked(test.getPlayable())
 
-        # print(test.gridSelected())
+        print(test.gridSelected())
         self.b.stateChanged.connect(self.pyInput)
         self.b.move(20,20)
         self.c = QCheckBox("Gravity?",self)
@@ -33,6 +34,8 @@ class ExampleWindow(QMainWindow):
         self.f = QCheckBox("AI?",self)
         self.f.stateChanged.connect(self.pyAI)
         self.f.move(20,100)
+        self.value=test.gridSelected()
+        print(self.value)
         # print("HI"+test.getGridNumber())
 
     def pyInput(self,state):
@@ -76,10 +79,14 @@ if __name__ == "__main__":
 
     app = QtWidgets.QApplication(sys.argv)
     test = mygameengine.Engine()
-    
+    p=Process(target=test.gridNumber())
+    p.start()
+    # print(p)
     
     mainWin = ExampleWindow()
     mainWin.show()
+    test
     test.Loop()
-    print(test.gridSelected)
+
+    # print(test.gridSelected)
     sys.exit( app.exec_() )

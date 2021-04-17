@@ -6,9 +6,14 @@
 #include"TileComponent.hpp"
 #include<vector>
 #include<map>
+#include<string>
 class Engine{
 
     private:
+        int WINDOW_WIDTH;
+        int WINDOW_HEIGHT;
+        std::string tilepath;
+        
         std::map<std::vector<int>, int> tMap;
         std::map<int,std::vector<int>> tMap2;
 
@@ -39,7 +44,8 @@ class Engine{
 
 
     public:
-        bool init();
+        bool initialize();
+        void setInit(int w, int h,std::string tilepath);
         int getTileNumber(int x, int y);
         int getGridNumber(int x, int y);
         // int get
