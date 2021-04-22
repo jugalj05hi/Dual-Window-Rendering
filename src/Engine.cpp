@@ -28,26 +28,7 @@ const int TILE_MAP_HEIGHT = 960;
 const int TILE_MAP_WIDTH = 320;
 const int TILE_SIZE = 32;
 
-// std::map<std::vector<int>, int> tMap;
-// std::map<int,std::vector<int>> tMap2;
 
-// std::map<std::vector<int>, int> gridMap;
-
-
-// // std::map<int::GameEngineTile> gridMap;
-// // r= WINDOW_WIDTH/32;
-// // c= WINDOW_HEIGHT/32;
-
-// GameEngineTile tileCollection[1000]; //Vector needed 
-
-// std::vector<TileComponent> tileArray;
-// enum Buttons
-// {
-//     PaddleOneUp = 0,
-//     PaddleOneDown,
-//     PaddleTwoUp,
-//     PaddleTwoDown,
-// };
 using json = nlohmann::json;
 bool Engine::init() {
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
@@ -349,12 +330,14 @@ void Engine::Loop() {
                 else if(event.type==SDL_MOUSEBUTTONDOWN){
 
                     switch(event.button.button){
-                        case SDL_BUTTON_LEFT:
+                    case SDL_BUTTON_LEFT:
+                        try {
                             std::cout << "Left button pressed" << std::endl;
                             if (event.button.windowID == 2) {
-                                tileSelected=getTileNumber(event.button.x,event.button.y);
+                                std::cout << "It is in window==2" << std::endl;
+                                tileSelected = getTileNumber(event.button.x, event.button.y);
+                                windowClicked = true;
 
-                                
                                 // std::cout << "Clicked in TILE MAP WINDOW" << std::endl;
                                 // std::cout << "XcoordinateT " << event.button.x << "\n";
                                 // std::cout << "YCoordinateT" << event.button.y << "\n";
@@ -363,10 +346,11 @@ void Engine::Loop() {
                                 // _x *= TILE_SIZE;
                                 // _y *= TILE_SIZE;
 
-                                                        
+
 
                             }
-                            if(event.button.windowID==1){
+                            if (event.button.windowID == 1) {
+                                // if(windowClicked == true){
                                 std::cout << "Clicked in Game WINDOW" << std::endl;
                                 // std::cout << "Xcoordinate" << event.button.x << "\n";
                                 // std::cout << "YCoordinate" << event.button.y << "\n"; 
@@ -376,23 +360,28 @@ void Engine::Loop() {
                                 // _y *= TILE_SIZE;
                                 // std::cout << "Xcoordinate" << _x << "\n";
                                 // std::cout << "YCoordinate" << _y << "\n"; 
-                                std::cout<<"Current Tile Selected"<<tileSelected<<std::endl;
-                                gridSelected=getGridNumber(event.button.x,event.button.y);
-                                std::vector<int> temp=tMap2.at(tileSelected);
-                                std::cout<<"Current Grid Selected"<<gridSelected<<std::endl;
-                                tileCollection[gridSelected].Update(temp.at(0),temp.at(1),tileSelected);
-                                std::cout <<"TILESELECTED" << tileSelected << std::endl;
+                                std::cout << "Current Tile Selected" << tileSelected << std::endl;
+                                gridSelected = getGridNumber(event.button.x, event.button.y);
+                                std::vector<int> temp = tMap2.at(tileSelected);
+                                std::cout << "Current Grid Selected" << gridSelected << std::endl;
+                                tileCollection[gridSelected].Update(temp.at(0), temp.at(1), tileSelected);
+                                std::cout << "TILESELECTED" << tileSelected << std::endl;
                                 // current=tileCollection[gridSelected];
 
-                                
+
 
 
                             // tileCollection[gridSelected].Update()
 
-                                
-                                
-                             }
-                            break;
+
+
+                            // }
+                        }
+                        }
+                        catch (...) {
+                            std::cout << "No tile selected" << std::endl;
+                        }
+                        break;
                         case SDL_BUTTON_RIGHT:
                             // std::cout << "Right button pressed" << std::endl;
                             

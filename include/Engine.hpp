@@ -15,7 +15,7 @@ class Engine{
         std::map<std::vector<int>, int> gridMap;
         int frameCount, timerFPS, lastFrame, fps;
 
-
+        bool windowClicked = false;
         // std::map<int::GameEngineTile> gridMap;
         // r= WINDOW_WIDTH/32;
         // c= WINDOW_HEIGHT/32;
