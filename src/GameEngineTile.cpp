@@ -133,3 +133,10 @@ GameEngineTile* GameEngineTile::getObject() {
     return this;
 }
 
+int GameEngineTile::getXPos() {
+    return xPos;
+}
+
+int GameEngineTile::getYPos() {
+    return yPos;
+}

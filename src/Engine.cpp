@@ -135,6 +135,8 @@ void Engine::download() {
     for (int i = 0; i < 600;i++) {
         jObject.clear();
         tileObject = tileCollection[i].getObject();
+        jObject["X"] = tileObject->getXPos();
+        jObject["Y"] = tileObject->getYPos();
         jObject["AI"] = tileObject->getAI();
         jObject["Gravity"] = tileObject->getGravity();
         jObject["Collectable"] = tileObject->getCollectable();
