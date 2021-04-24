@@ -22,8 +22,8 @@
 // int WINDOW_HEIGHT = 640;
 int FPS = 60;
 
-int TILE_MAP_HEIGHT = 960;
-int TILE_MAP_WIDTH = 320;
+// int TILE_MAP_HEIGHT = 960;
+// int TILE_MAP_WIDTH = 320;
 int TILE_SIZE = 32;
 using json = nlohmann::json;
 // std::map<std::vector<int>, int> tMap;
@@ -264,6 +264,10 @@ void Engine::Loop() {
         SDL_Window* subWindow = SDL_CreateWindow("Sub Window", WINDOW_WIDTH, 0, 960, 320, 0);
         SDL_Renderer* subRenderer = SDL_CreateRenderer(subWindow, -1, 0);
         SDL_Texture* texture = ResourceManager::getInstance().loadTexture(tilepath, subRenderer);
+        SDL_Point size;
+        SDL_QueryTexture(texture,NULL,NULL,&size.x,&size.y);
+        TILE_MAP_WIDTH=size.x;
+        TILE_MAP_HEIGHT=size.y;
         SDL_Texture* texture2 = ResourceManager::getInstance().loadTexture(tilepathC, renderer);
         scoreFont=ResourceManager::getInstance().loadFont("./assets/DejaVuSansMono.ttf",20);
             // scoreFont = resourceManager.loadFont(SCORE_FONT, 30);

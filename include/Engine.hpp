@@ -13,6 +13,8 @@ class Engine {
     private:
         int WINDOW_WIDTH;
         int WINDOW_HEIGHT;
+        int TILE_MAP_HEIGHT;
+        int TILE_MAP_WIDTH;
         std::string tilepath;
         std::string tilepathC;
 
