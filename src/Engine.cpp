@@ -25,7 +25,7 @@ int FPS = 60;
 int TILE_MAP_HEIGHT = 960;
 int TILE_MAP_WIDTH = 320;
 int TILE_SIZE = 32;
-
+using json = nlohmann::json;
 // std::map<std::vector<int>, int> tMap;
 // std::map<int,std::vector<int>> tMap2;
 
@@ -353,66 +353,70 @@ void Engine::Loop() {
 
 
                 }
-                else if(event.type==SDL_MOUSEBUTTONDOWN){
-
-                    switch(event.button.button){
-                        case SDL_BUTTON_LEFT:
-                            std::cout << "Left button pressed" << std::endl;
-                            if (event.button.windowID == 2) {
-                                tileSelected=getTileNumber(event.button.x,event.button.y);
-
-                                
-                                // std::cout << "Clicked in TILE MAP WINDOW" << std::endl;
-                                // std::cout << "XcoordinateT " << event.button.x << "\n";
-                                // std::cout << "YCoordinateT" << event.button.y << "\n";
-                                // int _x = std::floor( event.button.x / TILE_SIZE);
-                                // int _y = std::floor(event.button.y/ TILE_SIZE);
-                                // _x *= TILE_SIZE;
-                                // _y *= TILE_SIZE;
-
-                                                        
-
-                            }
-                            if(event.button.windowID==1){
-                                std::cout << "Clicked in Game WINDOW" << std::endl;
-                                // std::cout << "Xcoordinate" << event.button.x << "\n";
-                                // std::cout << "YCoordinate" << event.button.y << "\n"; 
-                                // int _x = std::floor( event.button.x / TILE_SIZE);
-                                // int _y = std::floor(event.button.y / TILE_SIZE);
-                                // _x *= TILE_SIZE;
-                                // _y *= TILE_SIZE;
-                                // std::cout << "Xcoordinate" << _x << "\n";
-                                // std::cout << "YCoordinate" << _y << "\n"; 
-                                std::cout<<"Current Tile Selected"<<tileSelected<<std::endl;
-                                gridSelected=getGridNumber(event.button.x,event.button.y);
-                                std::vector<int> temp=tMap2.at(tileSelected);
-                                std::cout<<"Current Grid Selected"<<gridSelected<<std::endl;
-                                tileCollection[gridSelected].Update(temp.at(0),temp.at(1),tileSelected);
-                                // current=tileCollection[gridSelected];
-
-                                
+                else if (event.type == SDL_MOUSEBUTTONDOWN) {
+                    try{
+                    switch (event.button.button) {
+                    case SDL_BUTTON_LEFT:
+                        std::cout << "Left button pressed" << std::endl;
+                        if (event.button.windowID == 2) {
+                            tileSelected = getTileNumber(event.button.x, event.button.y);
 
 
-                            // tileCollection[gridSelected].Update()
+                            // std::cout << "Clicked in TILE MAP WINDOW" << std::endl;
+                            // std::cout << "XcoordinateT " << event.button.x << "\n";
+                            // std::cout << "YCoordinateT" << event.button.y << "\n";
+                            // int _x = std::floor( event.button.x / TILE_SIZE);
+                            // int _y = std::floor(event.button.y/ TILE_SIZE);
+                            // _x *= TILE_SIZE;
+                            // _y *= TILE_SIZE;
 
-                                
-                                
-                             }
-                            break;
-                        case SDL_BUTTON_RIGHT:
-                            // std::cout << "Right button pressed" << std::endl;
-                            
-                            // std::cout<<"Window ID"<<event.button.windowID<<"\n";
-                            // SDL_MouseButtonEvent 
-                            gridSelected=getGridNumber(event.button.x,event.button.y);
-                            std::vector<int> temp=tMap2.at(tileSelected);
-                            std::cout<<"Current Grid Selected"<<gridSelected<<std::endl;
-                            if(tileCollection[gridSelected].GetTileType()!=0){
-                                tileCollection[gridSelected].Reset();
 
-                            }
-                            // tileCollection[gridSelected].Update(temp.at(0),temp.at(1),tileSelected)
-                            break;   
+
+                        }
+                        if (event.button.windowID == 1) {
+                            std::cout << "Clicked in Game WINDOW" << std::endl;
+                            // std::cout << "Xcoordinate" << event.button.x << "\n";
+                            // std::cout << "YCoordinate" << event.button.y << "\n"; 
+                            // int _x = std::floor( event.button.x / TILE_SIZE);
+                            // int _y = std::floor(event.button.y / TILE_SIZE);
+                            // _x *= TILE_SIZE;
+                            // _y *= TILE_SIZE;
+                            // std::cout << "Xcoordinate" << _x << "\n";
+                            // std::cout << "YCoordinate" << _y << "\n"; 
+                            std::cout << "Current Tile Selected" << tileSelected << std::endl;
+                            gridSelected = getGridNumber(event.button.x, event.button.y);
+                            std::vector<int> temp = tMap2.at(tileSelected);
+                            std::cout << "Current Grid Selected" << gridSelected << std::endl;
+                            tileCollection[gridSelected].Update(temp.at(0), temp.at(1), tileSelected);
+                            // current=tileCollection[gridSelected];
+
+
+
+
+                        // tileCollection[gridSelected].Update()
+
+
+
+                        }
+                        break;
+                    case SDL_BUTTON_RIGHT:
+                        // std::cout << "Right button pressed" << std::endl;
+
+                        // std::cout<<"Window ID"<<event.button.windowID<<"\n";
+                        // SDL_MouseButtonEvent 
+                        gridSelected = getGridNumber(event.button.x, event.button.y);
+                        std::vector<int> temp = tMap2.at(tileSelected);
+                        std::cout << "Current Grid Selected" << gridSelected << std::endl;
+                        if (tileCollection[gridSelected].GetTileType() != 0) {
+                            tileCollection[gridSelected].Reset();
+
+                        }
+                        // tileCollection[gridSelected].Update(temp.at(0),temp.at(1),tileSelected)
+                        break;
+                    }
+                    }
+                    catch (...) {
+                        std::cout << "Please select the tile and then click on canvas" << std::endl;
                     }
 
                 }
