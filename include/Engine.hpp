@@ -7,7 +7,8 @@
 #include<vector>
 #include<map>
 #include<string>
-class Engine{
+#include "json.hpp"
+class Engine {
 
     private:
         int WINDOW_WIDTH;
@@ -63,7 +64,7 @@ class Engine{
         bool getPlayableInfo();
         bool getAIInfo();
         int gridValue();
-        // void 
+        void download();
         std::vector<int> returnCoordinates(int type);
         void generateGameEngineGrid(SDL_Texture* tex,SDL_Renderer* renderEngine);
         void Loop();

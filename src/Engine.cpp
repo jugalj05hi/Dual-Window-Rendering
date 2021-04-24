@@ -222,6 +222,28 @@ void Engine :: generateGameEngineGrid(SDL_Texture* tex,SDL_Renderer* renderEngin
     }
 }
 
+void Engine::download() {
+    json jObject;
+    GameEngineTile* tileObject;
+    json jsonArray = json::array();
+    for (int i = 0; i < 600;i++) {
+        jObject.clear();
+        tileObject = tileCollection[i].getObject();
+        jObject["X"] = tileObject->getXPos();
+        jObject["Y"] = tileObject->getYPos();
+        jObject["AI"] = tileObject->getAI();
+        jObject["Gravity"] = tileObject->getGravity();
+        jObject["Collectable"] = tileObject->getCollectable();
+        jObject["Collide"] = tileObject->getCollidable();
+        jObject["Playable"] = tileObject->getPlayable();
+        jObject["TileNumber"] = tileObject->GetTileType();
+        jsonArray.push_back(jObject);
+    }
+    std::ofstream out("tileMap.txt");
+    out << jsonArray.dump();
+    // std::cout << jsonArray.dump() << std::endl;
+}
+
 
 
 void Engine::Loop() {
