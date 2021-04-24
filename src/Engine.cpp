@@ -56,10 +56,11 @@ bool Engine::initialize() {
     return true;
 }
 
-void Engine::setInit(int WINDOW_WIDTH1, int WINDOW_HEIGHT1,std::string tilepath1){
+void Engine::setInit(int WINDOW_WIDTH1, int WINDOW_HEIGHT1,std::string tilepath1,std::string tilepath2){
     this->WINDOW_WIDTH=WINDOW_WIDTH1;
     this->WINDOW_HEIGHT=WINDOW_HEIGHT1;
     this->tilepath=tilepath1;
+    this->tilepathC=tilepath2;
 
 
 
@@ -226,6 +227,7 @@ void Engine::download() {
     json jObject;
     GameEngineTile* tileObject;
     json jsonArray = json::array();
+    
     for (int i = 0; i < 600;i++) {
         jObject.clear();
         tileObject = tileCollection[i].getObject();
@@ -239,7 +241,8 @@ void Engine::download() {
         jObject["TileNumber"] = tileObject->GetTileType();
         jsonArray.push_back(jObject);
     }
-    std::ofstream out("tileMap.txt");
+    std::cout<<"DONE DOWNLOAD";
+    std::ofstream out("tileMap.json");
     out << jsonArray.dump();
     // std::cout << jsonArray.dump() << std::endl;
 }
@@ -260,7 +263,7 @@ void Engine::Loop() {
         SDL_Window* subWindow = SDL_CreateWindow("Sub Window", WINDOW_WIDTH, 0, 960, 320, 0);
         SDL_Renderer* subRenderer = SDL_CreateRenderer(subWindow, -1, 0);
         SDL_Texture* texture = ResourceManager::getInstance().loadTexture(tilepath, subRenderer);
-        SDL_Texture* texture2 = ResourceManager::getInstance().loadTexture(tilepath, renderer);
+        SDL_Texture* texture2 = ResourceManager::getInstance().loadTexture(tilepathC, renderer);
         scoreFont=ResourceManager::getInstance().loadFont("./assets/DejaVuSansMono.ttf",20);
             // scoreFont = resourceManager.loadFont(SCORE_FONT, 30);
         if (scoreFont==NULL){
@@ -360,7 +363,7 @@ void Engine::Loop() {
                     try{
                     switch (event.button.button) {
                     case SDL_BUTTON_LEFT:
-                        std::cout << "Left button pressed" << std::endl;
+                        // std::cout << "Left button pressed" << std::endl;
                         if (event.button.windowID == 2) {
                             tileSelected = getTileNumber(event.button.x, event.button.y);
                             windowFlag = true;
@@ -378,7 +381,7 @@ void Engine::Loop() {
 
                         }
                         if (event.button.windowID == 1 && windowFlag) {
-                            std::cout << "Clicked in Game WINDOW" << std::endl;
+                            // std::cout << "Clicked in Game WINDOW" << std::endl;
                             // std::cout << "Xcoordinate" << event.button.x << "\n";
                             // std::cout << "YCoordinate" << event.button.y << "\n"; 
                             // int _x = std::floor( event.button.x / TILE_SIZE);
@@ -387,10 +390,10 @@ void Engine::Loop() {
                             // _y *= TILE_SIZE;
                             // std::cout << "Xcoordinate" << _x << "\n";
                             // std::cout << "YCoordinate" << _y << "\n"; 
-                            std::cout << "Current Tile Selected" << tileSelected << std::endl;
+                            // std::cout << "Current Tile Selected" << tileSelected << std::endl;
                             gridSelected = getGridNumber(event.button.x, event.button.y);
                             std::vector<int> temp = tMap2.at(tileSelected);
-                            std::cout << "Current Grid Selected" << gridSelected << std::endl;
+                            // std::cout << "Current Grid Selected" << gridSelected << std::endl;
                             tileCollection[gridSelected].Update(temp.at(0), temp.at(1), tileSelected);
                             // current=tileCollection[gridSelected];
 
@@ -410,7 +413,7 @@ void Engine::Loop() {
                         // SDL_MouseButtonEvent 
                         gridSelected = getGridNumber(event.button.x, event.button.y);
                         std::vector<int> temp = tMap2.at(tileSelected);
-                        std::cout << "Current Grid Selected" << gridSelected << std::endl;
+                        // std::cout << "Current Grid Selected" << gridSelected << std::endl;
                         if (tileCollection[gridSelected].GetTileType() != 0) {
                             tileCollection[gridSelected].Reset();
 
@@ -429,7 +432,7 @@ void Engine::Loop() {
                     switch (event.button.button)
                     {
                     case SDL_BUTTON_LEFT:
-                        std::cout<<"Left Button pressed"<<std::endl;
+                        // std::cout<<"Left Button pressed"<<std::endl;
                         if(event.button.windowID==2){
                             //  tileSelected=getTileNumber(event.button.x, event.button.y);
 
@@ -575,7 +578,9 @@ PYBIND11_MODULE(mygameengine, m){
             .def("Playable", &Engine::Playable) // Expose member methods
             .def("AI", &Engine::AI) // Expose member methods
             .def("gridSelected", &Engine::gridValue)
+            .def("downloadJson",&Engine::download)
             .def("Loop", &Engine::Loop);
+            
             
             // .def("DrawRectangle", &Engine::DrawRectangle) ;
 // We do not need to expose everything to our users!

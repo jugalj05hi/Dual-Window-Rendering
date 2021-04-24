@@ -51,8 +51,8 @@ int GameEngineTile::GetTileType(){
 
 }
 void GameEngineTile::Reset(){
-    src.x=NULL;
-    src.y=NULL;
+    src.x=0;
+    src.y=0;
     tileType=0;
     isCollectable=false;
     isCollidable=false;

@@ -3,8 +3,6 @@ from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QLabel, QCheckBox, QWidget
 from PyQt5.QtCore import QSize    
 import mygameengine
-import shutil
-import os
 
 class MainWindow(QtWidgets.QWidget):
 
@@ -45,10 +43,7 @@ class MainWindow(QtWidgets.QWidget):
         self.setLayout(layout)
 
     def switch(self):
-
-        shutil.copyfile(self.line_edit.text(), target)
-
-        test.setInit(int(self.line_edit1.text()),int(self.line_edit2.text()),self.line_edit.text(),target)
+        test.setInit(int(self.line_edit1.text()),int(self.line_edit2.text()),self.line_edit.text())
         self.switch_window.emit(self.line_edit.text())
         self.switch_window.emit(test.Loop())
 
@@ -84,14 +79,9 @@ class WindowTwo(QtWidgets.QWidget):
         self.f = QCheckBox("AI?",self)
         self.f.stateChanged.connect(self.pyAI)
         self.f.move(20,100)
-        self.f = QCheckBox("Download?",self)
-        self.f.stateChanged.connect(self.pyDwnld)
-        self.f.move(20,140)
-        # self.button = QtWidgets.QPushButton('Continue')
-        # self.button.clicked.connect(sel)
-        # self.button = QtWidgets.QPushButton('PyQt5 button')
-        # self.button.setToolTip('This is an example button')
-        # self.button.move(20,130)
+        self.button = QtWidgets.QPushButton('PyQt5 button')
+        self.button.setToolTip('This is an example button')
+        self.button.move(20,130)
         # self.button.clicked.connect(True)
         # self.value=test.gridSelected()
         # print(self.value)
@@ -115,8 +105,6 @@ class WindowTwo(QtWidgets.QWidget):
         test.Collectable()
     def pyAI(self,state):
         test.AI()
-    def pyDwnld(self,state):
-        test.downloadJson()
     def default(self):
         print(test.gridNumber)
         # self.setWindowTitle('Window Two')
@@ -193,9 +181,6 @@ def main():
 
 
 if __name__ == '__main__':
-    target = './assets/sample1.png'
-
     test = mygameengine.Engine()
 
     main()
-    os.remove(target)

@@ -14,6 +14,8 @@ class Engine {
         int WINDOW_WIDTH;
         int WINDOW_HEIGHT;
         std::string tilepath;
+        std::string tilepathC;
+
         
         std::map<std::vector<int>, int> tMap;
         std::map<int,std::vector<int>> tMap2;
@@ -47,7 +49,7 @@ class Engine {
 
     public:
         bool initialize();
-        void setInit(int w, int h,std::string tilepath);
+        void setInit(int w, int h,std::string tilepath,std::string tilepath2);
         int getTileNumber(int x, int y);
         int getGridNumber(int x, int y);
         // int get
@@ -66,7 +68,7 @@ class Engine {
         bool getAIInfo();
         int gridValue();
         void download();
-        std::vector<int> returnCoordinates(int type);
+         std::vector<int> returnCoordinates(int type);
         void generateGameEngineGrid(SDL_Texture* tex,SDL_Renderer* renderEngine);
         void Loop();
 
