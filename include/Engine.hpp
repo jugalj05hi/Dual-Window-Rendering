@@ -30,8 +30,9 @@ class Engine {
         GameEngineTile current;
         std::vector<TileComponent> tileArray;
         int gridSelected=0;
-        TTF_Font *scoreFont;
-       
+        TTF_Font* scoreFont;
+        bool windowFlag = false;
+
         // SDL_Rect src;
         // SDL_Rect dest;
         // int yPos;

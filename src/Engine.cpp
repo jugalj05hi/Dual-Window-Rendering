@@ -350,6 +350,9 @@ void Engine::Loop() {
                     {
                         // buttons[Buttons::PaddleTwoDown] = true;
                     }
+                    else if (event.key.keysym.sym == SDLK_d) {
+                        download();
+                    }
 
 
                 }
@@ -360,6 +363,7 @@ void Engine::Loop() {
                         std::cout << "Left button pressed" << std::endl;
                         if (event.button.windowID == 2) {
                             tileSelected = getTileNumber(event.button.x, event.button.y);
+                            windowFlag = true;
 
 
                             // std::cout << "Clicked in TILE MAP WINDOW" << std::endl;
@@ -373,7 +377,7 @@ void Engine::Loop() {
 
 
                         }
-                        if (event.button.windowID == 1) {
+                        if (event.button.windowID == 1 && windowFlag) {
                             std::cout << "Clicked in Game WINDOW" << std::endl;
                             // std::cout << "Xcoordinate" << event.button.x << "\n";
                             // std::cout << "YCoordinate" << event.button.y << "\n"; 
