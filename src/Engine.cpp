@@ -226,7 +226,7 @@ void Engine::download() {
     json jObject;
     GameEngineTile* tileObject;
     json jsonArray = json::array();
-    for (int i = 0; i < 600;i++) {
+    for (int i = 0; i < (WINDOW_HEIGHT * WINDOW_WIDTH);i++) {
         jObject.clear();
         tileObject = tileCollection[i].getObject();
         jObject["X"] = tileObject->getXPos();
