@@ -207,7 +207,7 @@ void Engine :: generateGameEngineGrid(SDL_Texture* tex,SDL_Renderer* renderEngin
             tempVector.clear();
             tempVector.push_back(x);
             tempVector.push_back(y);
-            tileCollection[counter]= GameEngineTile(x,y,counter,tex,renderEngine);
+            tileCollection[counter]= GameEngineTile(x,y,0,tex,renderEngine);
             // GameEngineTile tileCreated= new GameEngineTile(x)
             gridMap.insert({ tempVector, counter });
             // std::cout << "X = " << x << std::endl;
@@ -228,7 +228,7 @@ void Engine::download() {
     GameEngineTile* tileObject;
     json jsonArray = json::array();
     
-    for (int i = 0; i < 600;i++) {
+    for (int i = 1; i < 600; i++) {
         jObject.clear();
         tileObject = tileCollection[i].getObject();
         jObject["X"] = tileObject->getXPos();
@@ -242,6 +242,7 @@ void Engine::download() {
         jsonArray.push_back(jObject);
     }
     std::cout<<"DONE DOWNLOAD";
+    std::cout << "TESTING________" << std::endl;
     std::ofstream out("tileMap.json");
     out << jsonArray.dump();
     // std::cout << jsonArray.dump() << std::endl;
